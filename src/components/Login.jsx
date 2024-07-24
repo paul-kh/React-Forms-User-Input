@@ -1,23 +1,25 @@
 import { useState } from "react";
 
 export default function Login() {
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredValue, setEnteredValue] = useState({
+    email: "",
+    password: "",
+  });
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log("submitted");
-    console.log("User email: ", enteredEmail);
-    console.log("User password: ", enteredPassword);
+    console.log("User email: ", enteredValue.email);
+    console.log("User password: ", enteredValue.password);
   }
 
-  function handleEmailChange(event) {
-    setEnteredEmail(event.target.value);
+  function handleInputValues(identifier, event) {
+    setEnteredValue((prevValues) => ({
+      ...prevValues,
+      [identifier]: event.target.value,
+    }));
   }
 
-  function handlePasswordChange(event) {
-    setEnteredPassword(event.target.value);
-  }
   return (
     /* The elegant way to prevent the default behavior of form submission:
          - specify the onSubmit = {handleSubmit} in the form element,
@@ -33,8 +35,8 @@ export default function Login() {
             id="email"
             type="email"
             name="email"
-            onChange={handleEmailChange}
-            value={enteredEmail}
+            onChange={(event) => handleInputValues("email", event)}
+            value={enteredValue.email}
           />
         </div>
 
@@ -44,8 +46,8 @@ export default function Login() {
             id="password"
             type="password"
             name="password"
-            onChange={handlePasswordChange}
-            value={enteredPassword}
+            onChange={(event) => handleInputValues("password", event)}
+            value={enteredValue.password}
           />
         </div>
       </div>
