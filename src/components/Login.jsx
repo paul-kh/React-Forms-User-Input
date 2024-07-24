@@ -1,10 +1,15 @@
 export default function Login() {
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     console.log("submitted");
   }
 
   return (
-    <form>
+    /* The elegant way to prevent the default behavior of form submission:
+         - specify the onSubmit = {handleSubmit} in the form element,
+         - call the prevenDefault() method of the form event in the handleSubmit function
+    */
+    <form onSubmit={handleSubmit}>
       <h2>Login</h2>
 
       <div className="control-row">
@@ -21,11 +26,7 @@ export default function Login() {
 
       <p className="form-actions">
         <button className="button button-flat">Reset</button>
-        {/*On the submit button below, we have to specify the type="button",
-          so that the form will not auto submit the user's input by itself */}
-        <button type="button" className="button" onClick={handleSubmit}>
-          Login
-        </button>
+        <button className="button">Login</button>
       </p>
     </form>
   );
