@@ -6,6 +6,14 @@ export default function Login() {
     password: "",
   });
 
+  // didEdit below means when losing focus on input field
+  const [didEdit, setDidEdit] = useState({
+    email: false,
+    password: false,
+  });
+
+  const emailIsInvalid = didEdit.email && !enteredValue.email.includes("@");
+
   function handleSubmit(event) {
     event.preventDefault();
     console.log("submitted");
@@ -13,13 +21,25 @@ export default function Login() {
     console.log("User password: ", enteredValue.password);
   }
 
-  function handleInputValues(identifier, event) {
+  function handleInputChange(identifier, event) {
     setEnteredValue((prevValues) => ({
       ...prevValues,
       [identifier]: event.target.value,
     }));
+
+    // As soon as user start ediding, error message should go away
+    setDidEdit((prevEdit) => ({
+      ...prevEdit,
+      [identifier]: false,
+    }));
   }
 
+  function handleInputBlur(identifier) {
+    setDidEdit((prevEdit) => ({
+      ...prevEdit,
+      [identifier]: true,
+    }));
+  }
   return (
     /* The elegant way to prevent the default behavior of form submission:
          - specify the onSubmit = {handleSubmit} in the form element,
@@ -35,9 +55,13 @@ export default function Login() {
             id="email"
             type="email"
             name="email"
-            onChange={(event) => handleInputValues("email", event)}
+            onBlur={() => handleInputBlur("email")}
+            onChange={(event) => handleInputChange("email", event)}
             value={enteredValue.email}
           />
+          <div className="control-error">
+            {emailIsInvalid && <p>Please enter a valid email address.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">
