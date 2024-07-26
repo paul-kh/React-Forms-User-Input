@@ -1,6 +1,29 @@
 export default function Signup() {
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    /** The FormData() constructor function is built to the browser */
+    const fd = new FormData(event.target);
+    // const enteredEmail = fd.get('email');
+    // const enteredPassword = fd.get('password');
+
+    /**************************************************************************************************************************
+     * NOTES:
+     * Common pattern for collecting all form input values is to use the 'Oject' class.
+     * The Object class is provided by the browser.
+     *
+     * - fd.entries() will iterate every value of form input fields
+     * - Object.fromEntries(fd.entries()) return an object containing key value pairs of all the form fields
+     *
+     *************************************************************************************************************************/
+    const data = Object.fromEntries(fd.entries()); // Get form data, except values of checkboxes in Fieldset
+    const acquisitionChannel = fd.getAll("acquisition"); // Get values of all checkboxes in Fieldset
+    data.acquisition = acquisitionChannel; // Add key-value pair to data form data
+    console.log(data);
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
 
