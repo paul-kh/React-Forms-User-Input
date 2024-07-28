@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export default function Signup() {
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -19,7 +22,14 @@ export default function Signup() {
     const data = Object.fromEntries(fd.entries()); // Get form data, except values of checkboxes in Fieldset
     const acquisitionChannel = fd.getAll("acquisition"); // Get values of all checkboxes in Fieldset
     data.acquisition = acquisitionChannel; // Add key-value pair to data form data
-    console.log(data);
+
+    if (data.password !== data["confirm-password"]) {
+      setPasswordNotMatch(true);
+      console.log("password didn't match");
+      return;
+    }
+    console.log("Sending HTTP request....", data);
+    setPasswordNotMatch(false);
   }
 
   return (
@@ -52,6 +62,9 @@ export default function Signup() {
             name="confirm-password"
             required
           />
+          {passwordNotMatch && (
+            <p className="control-error"> The confirm password didn't match</p>
+          )}
         </div>
       </div>
 
